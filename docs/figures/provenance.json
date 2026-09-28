@@ -10,5 +10,10 @@
     "sha256": "7e243637df77c7c96d1f58974ae4b5fcf14d1054cf2c67facf428086934c89eb",
     "rendering": "PNG rendered from the unmodified source SVG with MuPDF; no simulation rerun.",
     "dark_rendering": "Paint attributes recoloured for a dark canvas; SVG path geometry checked unchanged. Original SVG retained."
+  },
+  "fiber_animation": {
+    "file": "docs/figures/fiber-animation.gif",
+    "source": "Re-run of runs/stim_multiplierpw0.2dia4 at 1.5x activation threshold with membrane voltage recorded at every node; activation thresholds, action-potential counts and last action-potential times matched the saved outputs.",
+    "rendering": "matplotlib, t = 58-84 ms of the conventional and burst active-charge-balance runs."
   }
 }

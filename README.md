@@ -36,6 +36,12 @@ These modelling results suggest that differences in firing regularity may help e
 
 *Saved amplitude-sweep output for a 4 µm fibre over a 200 ms simulation window. The source counts, simulation parameters, and figure provenance are in [docs/figures](docs/figures/). These are retained project outputs with colours adapted for a dark background; the original SVGs are preserved.*
 
+## Simulation animation
+
+![Membrane voltage along the fibre during tonic and burst stimulation](docs/figures/fiber-animation.gif)
+
+*Membrane voltage at every node of the 4 µm fibre during one stimulation cycle at 150% of activation threshold. Left: the electrode region, with myelin in grey and nodes coloured by voltage. Right: voltage along the whole fibre. Tonic pulses give single spikes that travel to both ends; burst pulses start spikes at varying sites near the electrode, and not all of them reach the ends. Rendered from a re-run of the study configuration with the voltage recorded at every node; thresholds and spike counts matched the original outputs.*
+
 ## Code and supporting material
 
 | Path | Contents |
