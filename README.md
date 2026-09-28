@@ -2,7 +2,7 @@
 
 [![Membrane voltage along the fibre during tonic and burst stimulation](docs/figures/fiber-animation.gif)](https://nicaja.github.io/Tonic-and-Burst-Stimulation/animation/)
 
-*One 25 ms stimulation cycle at 150% of activation threshold on the 4 µm fibre, slowed down. Nodes of Ranvier are coloured by their membrane voltage between the myelin segments, and the electrode contacts show blue while cathodic and red while anodic. Tonic pulses (top) give single spikes that travel to both ends; burst pulses (bottom) start spikes at varying sites near the electrode, and not all of them reach the ends. Rendered from a re-run of the study configuration with the voltage recorded at every node; thresholds and spike counts matched the original outputs.*
+*The full 200 ms simulation at 150% of activation threshold on the 4 µm fibre, slowed down. Nodes of Ranvier are coloured by their membrane voltage between the myelin segments, and the electrode contacts show blue while cathodic and red while anodic. Tonic pulses (top) give single spikes that travel to both ends; burst pulses (bottom) start spikes at varying sites near the electrode, and not all of them reach the ends. Rendered from a re-run of the study configuration with the voltage recorded at every node; thresholds and spike counts matched the original outputs.*
 
 [Interactive version](https://nicaja.github.io/Tonic-and-Burst-Stimulation/animation/): switch between tonic, FAST and burst and scrub through the full 200 ms.
 
