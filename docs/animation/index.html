@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tonic and burst stimulation of a myelinated axon</title>
+  <meta name="description" content="Animated membrane voltage from the EMBC 2025 fibre simulations: tonic, FAST and burst spinal cord stimulation of a 4 µm MRG axon.">
+  <style>
+    :root {
+      --bg: #0d1117; --panel: #0d1117; --ink: #e6edf3; --muted: #8b949e; --line: #21262d;
+      --accent: #6ca0dc; --button: #161c25; --button-on: #243042;
+      --cath: #6ca0dc; --anod: #e5534b; --hyp: #4a78b5; --rest: #30363d; --spike: #d98a34;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --bg: #f5f1e9; --panel: #efe9df; --ink: #201d19; --muted: #6d665e; --line: #d5cdbf;
+        --accent: #1d6f8c; --button: #ebe4d8; --button-on: #ddd3c3;
+        --cath: #1d6f8c; --anod: #b0306a; --hyp: #466eb4; --rest: #d4cbbc; --spike: #a64f35;
+      }
+    }
+    :root[data-theme="light"] {
+      --bg: #f5f1e9; --panel: #efe9df; --ink: #201d19; --muted: #6d665e; --line: #d5cdbf;
+      --accent: #1d6f8c; --button: #ebe4d8; --button-on: #ddd3c3;
+      --cath: #1d6f8c; --anod: #b0306a; --hyp: #466eb4; --rest: #d4cbbc; --spike: #a64f35;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--ink); }
+    body { font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 1240px; margin: 0 auto; padding: 28px 20px 48px; }
+    h1 { font-size: clamp(1.35rem, 2.6vw, 1.9rem); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 6px; }
+    .lede { color: var(--muted); margin: 0 0 18px; max-width: 78ch; }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin-bottom: 12px; }
+    .group { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .group button { background: var(--button); color: var(--ink); border: 0; border-right: 1px solid var(--line);
+      padding: 7px 13px; font: inherit; font-size: 14px; cursor: pointer; min-height: 36px; }
+    .group button:last-child { border-right: 0; }
+    .group button[aria-pressed="true"] { background: var(--button-on); color: var(--accent); font-weight: 600; }
+    .group button:focus-visible, canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .readout { font: 13px/1.4 ui-monospace, "Cascadia Mono", Consolas, monospace; color: var(--muted); }
+    .stage { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+    canvas { display: block; width: 100%; height: auto; border-radius: 6px; touch-action: none; }
+    .stats { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 14px 2px 0; font-size: 14px; }
+    .stats b { color: var(--ink); font-weight: 600; }
+    .stats span { color: var(--muted); }
+    .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px 28px;
+      margin-top: 22px; color: var(--muted); font-size: 14px; }
+    .legend b { color: var(--ink); font-weight: 600; }
+    .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; }
+    .note { color: var(--muted); font-size: 13px; margin-top: 22px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .note a { color: var(--accent); }
+    body.capture main { padding: 0; max-width: none; }
+    body.capture .chrome { display: none; }
+    body.capture .stage { border: 0; border-radius: 0; padding: 0; background: var(--bg); }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="chrome">
+      <h1>Tonic and burst stimulation of a myelinated axon</h1>
+      <p class="lede">Membrane voltage at every node of a 4 µm MRG axon model during spinal cord stimulation at 1.5× activation threshold, re-run from the EMBC 2025 study. Each biphasic pulse can start a spike near the electrode; watch where spikes begin, how they travel along the fibre, and which ones never arrive.</p>
+      <div class="controls" role="toolbar" aria-label="Animation controls">
+        <div class="group" role="group" aria-label="Waveform">
+          <button type="button" data-mode="tonic" aria-pressed="false">Tonic 40 Hz</button>
+          <button type="button" data-mode="fast" aria-pressed="false">FAST 90 Hz</button>
+          <button type="button" data-mode="burst" aria-pressed="true">Burst 40/500 Hz</button>
+          <button type="button" data-mode="compare" aria-pressed="false">Tonic vs burst</button>
+        </div>
+        <div class="group" role="group" aria-label="Playback">
+          <button type="button" id="play" aria-pressed="true">Pause</button>
+          <button type="button" id="restart">Restart</button>
+        </div>
+        <div class="group" role="group" aria-label="Speed">
+          <button type="button" data-speed="0.25" aria-pressed="false">¼×</button>
+          <button type="button" data-speed="0.5" aria-pressed="false">½×</button>
+          <button type="button" data-speed="1" aria-pressed="true">1×</button>
+          <button type="button" data-speed="3" aria-pressed="false">3×</button>
+        </div>
+        <span class="readout" id="clock" aria-live="off">t = 0.0 ms</span>
+      </div>
+    </div>
+    <div class="stage">
+      <canvas id="fiber" width="1200" height="700" tabindex="0"
+        aria-label="Animation of membrane voltage along a myelinated axon during electrical stimulation. Space pauses, arrow keys step, click the timeline to jump."></canvas>
+    </div>
+    <div class="chrome">
+      <div class="stats" id="stats"></div>
+      <div class="legend">
+        <div><b>Fibre.</b> A 100 mm, 4 µm axon built with the McIntyre–Richardson–Grill geometry: 243 nodes of Ranvier 412 µm apart, each internode made of MYSA, FLUT and six STIN myelin segments. The close-up shows the 13 mm around the electrode; node width and all vertical sizes are exaggerated for visibility.</div>
+        <div><b>Electrode.</b> Two point-source contacts 0.5 mm above the fibre and 3 mm apart. During each phase one contact is <span class="swatch" style="background:var(--cath)"></span>cathodic and the other <span class="swatch" style="background:var(--anod)"></span>anodic. Bars at the nodes show the activating function: where the field pushes the membrane towards (up) or away from (down) firing.</div>
+        <div><b>Voltage.</b> Node colour and glow follow the recorded membrane potential, from <span class="swatch" style="background:var(--hyp)"></span>hyperpolarised through <span class="swatch" style="background:var(--rest);outline:1px solid var(--line)"></span>rest to <span class="swatch" style="background:var(--spike)"></span>an action potential. The map below plots the same voltage for all nodes over time; ticks mark spikes leaving the left and right ends of the fibre.</div>
+      </div>
+      <p class="note">Data: re-simulation of the amplitude-sweep configuration (4 µm fibre, 0.2 ms tonic and FAST pulses, 1 ms burst pulses, active charge balance, 1.5× threshold) with PyFibers and NEURON 8.2.6. Thresholds, action-potential counts and last-spike times match the saved project outputs exactly. Paper: <a href="https://doi.org/10.1109/EMBC58623.2025.11253067">Atchuthan, Grill &amp; Meijs, IEEE EMBC 2025</a>. The model explores mechanisms; it does not predict clinical outcomes.</p>
+    </div>
+  </main>
+  <script type="module" src="fiber-animation.js"></script>
+</body>
+</html>

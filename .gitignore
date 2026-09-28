@@ -29,3 +29,8 @@ data/
 !docs/figures/*.png
 !docs/figures/*.svg
 !docs/figures/*.json
+
+# Interactive animation data
+!docs/animation/data/
+!docs/animation/data/*.bin
+!docs/animation/data/*.json

@@ -3,3 +3,6 @@
 
 # Preserve original simulation figures byte for byte, including SVG path spacing.
 docs/figures/*.svg -text -whitespace linguist-generated=true
+
+# Quantised voltage data for the fibre animation: keep byte for byte
+docs/animation/data/*.bin binary
