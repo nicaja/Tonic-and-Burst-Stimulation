@@ -9,19 +9,19 @@
     :root {
       --bg: #0d1117; --panel: #0d1117; --ink: #e6edf3; --muted: #8b949e; --line: #21262d;
       --accent: #6ca0dc; --button: #161c25; --button-on: #243042;
-      --cath: #6ca0dc; --anod: #e5534b; --hyp: #4a78b5; --rest: #21262d; --spike: #d98a34;
+      --cath: #6ca0dc; --anod: #e5534b; --hyp: #4a78b5; --rest: #30363d; --spike: #d98a34;
     }
     @media (prefers-color-scheme: light) {
       :root:not([data-theme="dark"]) {
         --bg: #f5f1e9; --panel: #efe9df; --ink: #201d19; --muted: #6d665e; --line: #d5cdbf;
         --accent: #1d6f8c; --button: #ebe4d8; --button-on: #ddd3c3;
-        --cath: #1d6f8c; --anod: #b0306a; --hyp: #466eb4; --rest: #e8e2d7; --spike: #a64f35;
+        --cath: #1d6f8c; --anod: #b0306a; --hyp: #466eb4; --rest: #d4cbbc; --spike: #a64f35;
       }
     }
     :root[data-theme="light"] {
       --bg: #f5f1e9; --panel: #efe9df; --ink: #201d19; --muted: #6d665e; --line: #d5cdbf;
       --accent: #1d6f8c; --button: #ebe4d8; --button-on: #ddd3c3;
-      --cath: #1d6f8c; --anod: #b0306a; --hyp: #466eb4; --rest: #e8e2d7; --spike: #a64f35;
+      --cath: #1d6f8c; --anod: #b0306a; --hyp: #466eb4; --rest: #d4cbbc; --spike: #a64f35;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; background: var(--bg); color: var(--ink); }
@@ -57,7 +57,7 @@
   <main>
     <div class="chrome">
       <h1>Tonic and burst stimulation of a myelinated axon</h1>
-      <p class="lede">Membrane voltage along a 4 µm MRG axon model during spinal cord stimulation at 1.5× activation threshold, re-run from the EMBC 2025 study.</p>
+      <p class="lede">Membrane voltage at every node of a 4 µm MRG axon model during spinal cord stimulation at 1.5× activation threshold, re-run from the EMBC 2025 study. Each biphasic pulse can start a spike near the electrode; watch where spikes begin, how they travel along the fibre, and which ones never arrive.</p>
       <div class="controls" role="toolbar" aria-label="Animation controls">
         <div class="group" role="group" aria-label="Waveform">
           <button type="button" data-mode="tonic" aria-pressed="false">Tonic 40 Hz</button>
@@ -85,9 +85,9 @@
     <div class="chrome">
       <div class="stats" id="stats"></div>
       <div class="legend">
-        <div><b>Fibre.</b> A 100 mm, 4 µm axon with McIntyre–Richardson–Grill geometry: 243 nodes of Ranvier 412 µm apart, separated by myelin. The strip under each heading is the 13 mm below the electrode; node size is exaggerated.</div>
-        <div><b>Electrode.</b> Two point-source contacts 0.5 mm above the fibre and 3 mm apart, shown <span class="swatch" style="background:var(--cath)"></span>cathodic or <span class="swatch" style="background:var(--anod)"></span>anodic while they pass current.</div>
-        <div><b>Propagation map.</b> Voltage at every node (0–100 mm) over time, from <span class="swatch" style="background:var(--hyp)"></span>hyperpolarised through <span class="swatch" style="background:var(--rest);outline:1px solid var(--line)"></span>rest to <span class="swatch" style="background:var(--spike)"></span>an action potential. Each chevron is a spike starting under the electrode (▸) and travelling to both ends. Click the map to jump in time.</div>
+        <div><b>Fibre.</b> A 100 mm, 4 µm axon built with the McIntyre–Richardson–Grill geometry: 243 nodes of Ranvier 412 µm apart, each internode made of MYSA, FLUT and six STIN myelin segments. The close-up shows the 13 mm around the electrode; node width and all vertical sizes are exaggerated for visibility.</div>
+        <div><b>Electrode.</b> Two point-source contacts 0.5 mm above the fibre and 3 mm apart. During each phase one contact is <span class="swatch" style="background:var(--cath)"></span>cathodic and the other <span class="swatch" style="background:var(--anod)"></span>anodic. Bars at the nodes show the activating function: where the field pushes the membrane towards (up) or away from (down) firing.</div>
+        <div><b>Voltage.</b> Node colour and glow follow the recorded membrane potential, from <span class="swatch" style="background:var(--hyp)"></span>hyperpolarised through <span class="swatch" style="background:var(--rest);outline:1px solid var(--line)"></span>rest to <span class="swatch" style="background:var(--spike)"></span>an action potential. The map below plots the same voltage for all nodes over time; ticks mark spikes leaving the left and right ends of the fibre.</div>
       </div>
       <p class="note">Data: re-simulation of the amplitude-sweep configuration (4 µm fibre, 0.2 ms tonic and FAST pulses, 1 ms burst pulses, active charge balance, 1.5× threshold) with PyFibers and NEURON 8.2.6. Thresholds, action-potential counts and last-spike times match the saved project outputs exactly. Paper: <a href="https://doi.org/10.1109/EMBC58623.2025.11253067">Atchuthan, Grill &amp; Meijs, IEEE EMBC 2025</a>. The model explores mechanisms; it does not predict clinical outcomes.</p>
     </div>

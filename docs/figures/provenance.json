@@ -14,6 +14,6 @@
   "fiber_animation": {
     "file": "docs/figures/fiber-animation.gif",
     "source": "Re-run of runs/stim_multiplierpw0.2dia4 at 1.5x activation threshold with membrane voltage recorded at every node; activation thresholds, action-potential counts and last action-potential times matched the saved outputs.",
-    "rendering": "Browser canvas renderer: a close-up of the fibre under the electrode and a propagation map (membrane voltage at every node against time, 0-210 ms) for the conventional and burst active-charge-balance runs; frames for t = 58-84 ms encoded as GIF."
+    "rendering": "Browser canvas renderer, frames for t = 58-84 ms of the conventional and burst active-charge-balance runs, encoded as GIF."
   }
 }
