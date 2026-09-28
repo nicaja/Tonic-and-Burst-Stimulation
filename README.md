@@ -1,5 +1,9 @@
 # Neural Responses to Tonic and Burst Stimulation
 
+[![Membrane voltage along the fibre during tonic and burst stimulation](docs/figures/fiber-animation.gif)](https://nicaja.github.io/Tonic-and-Burst-Stimulation/animation/)
+
+*Tonic and burst stimulation of the 4 µm fibre model at 150% of activation threshold, re-run from the study configuration and slowed down. Each panel shows the 13 mm under the electrode (contacts blue while cathodic, red while anodic) above a propagation map of the voltage at every node over 200 ms. Tonic pulses each give one spike that reaches both ends; burst pulses start spikes at shifting times and sites, and 21 of 40 reach the end. [Interactive version](https://nicaja.github.io/Tonic-and-Burst-Stimulation/animation/) with FAST as well.*
+
 Research code and selected figures from a computational study of spinal cord stimulation, carried out at Aalborg University and the Grill Lab at Duke University. The study examined how waveform shape and charge balancing affect axonal activation and the fidelity of short-term responses.
 
 **Completed research project.** The repository preserves the simulation and analysis work associated with the paper.
@@ -35,14 +39,6 @@ These modelling results suggest that differences in firing regularity may help e
 ![Fidelity as a function of stimulation amplitude for conventional, FAST, and burst waveforms](docs/figures/fidelity-dark.png)
 
 *Saved amplitude-sweep output for a 4 µm fibre over a 200 ms simulation window. The source counts, simulation parameters, and figure provenance are in [docs/figures](docs/figures/). These are retained project outputs with colours adapted for a dark background; the original SVGs are preserved.*
-
-## Simulation animation
-
-[![Membrane voltage along the fibre during tonic and burst stimulation](docs/figures/fiber-animation.gif)](https://nicaja.github.io/Tonic-and-Burst-Stimulation/animation/)
-
-*One 25 ms stimulation cycle at 150% of activation threshold on the 4 µm fibre, slowed down. Nodes of Ranvier are coloured by their membrane voltage between the myelin segments, and the electrode contacts show blue while cathodic and red while anodic. Tonic pulses (top) give single spikes that travel to both ends; burst pulses (bottom) start spikes at varying sites near the electrode, and not all of them reach the ends. Rendered from a re-run of the study configuration with the voltage recorded at every node; thresholds and spike counts matched the original outputs.*
-
-[Interactive version](https://nicaja.github.io/Tonic-and-Burst-Stimulation/animation/): switch between tonic, FAST and burst and scrub through the full 200 ms.
 
 ## Code and supporting material
 
