@@ -179,14 +179,7 @@ function drawLane(lane, vals, t, isCompare) {
   const gap = 5;
 
   // lane heading
-  const right = wf.end_spikes_ms.right.length;
-  const exp = EXPECTED_PULSES[key];
-  text(isCompare ? `${wf.label}` : 'Close-up: the 13 mm of fibre under the electrode', X0, lane.top + 16,
-    { size: isCompare ? 15 : 13, color: theme.ink, weight: 600 });
-  if (isCompare) {
-    text(`${wf.detail}  ·  ${right} of ${exp} pulses reach the fibre end (${Math.round((100 * right) / exp)}%)`,
-      X0 + (key === 'tonic' ? 58 : 56), lane.top + 16, { size: 13 });
-  }
+  text(wf.label, X0, lane.top + 16, { size: 14, color: theme.ink, weight: 600 });
 
   const visible = [];
   for (let i = 0; i < N; i++) { const x = xz(zNodes[i]); if (x > X0 - 60 && x < X1 + 60) visible.push(i); }
@@ -206,21 +199,18 @@ function drawLane(lane, vals, t, isCompare) {
     ctx.beginPath(); ctx.moveTo(x, lane.top + 28); ctx.lineTo(x, y - 9); ctx.stroke();
     if (current !== 0) {
       const c = current < 0 ? theme.cath : theme.anod;
-      const g = ctx.createRadialGradient(x, y, 2, x, y, 95);
-      g.addColorStop(0, rgba(c, theme.glow === 'lighter' ? 0.22 : 0.18));
+      const g = ctx.createRadialGradient(x, y, 2, x, y, 60);
+      g.addColorStop(0, rgba(c, theme.glow === 'lighter' ? 0.12 : 0.1));
       g.addColorStop(1, rgba(c, 0));
       ctx.globalCompositeOperation = theme.glow;
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 95, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 60, 0, Math.PI * 2); ctx.fill();
       ctx.globalCompositeOperation = 'source-over';
     }
-    const disc = ctx.createLinearGradient(x, y - 8, x, y + 8);
-    disc.addColorStop(0, '#c6ced8'); disc.addColorStop(1, '#6d7684');
-    ctx.fillStyle = disc; ctx.beginPath(); ctx.arc(x, y, 8, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = theme.muted; ctx.beginPath(); ctx.arc(x, y, 8, 0, Math.PI * 2); ctx.fill();
     if (current !== 0) {
       const c = current < 0 ? theme.cath : theme.anod;
       ctx.strokeStyle = rgba(c, 1); ctx.lineWidth = 2.5; ctx.stroke();
       text(current < 0 ? '−' : '+', x, y + 4.5, { size: 13, color: '#0b0e13', align: 'center', weight: 700 });
-      if (!isCompare) text(current < 0 ? 'cathode' : 'anode', x + 14, y - 10, { size: 11, color: rgba(c, 1) });
     }
   });
 
@@ -248,9 +238,9 @@ function drawLane(lane, vals, t, isCompare) {
   // myelin sheaths
   const my = theme.myelin;
   const sheath = ctx.createLinearGradient(0, fiberY - myelinH / 2, 0, fiberY + myelinH / 2);
-  sheath.addColorStop(0, rgba(my, theme.glow === 'lighter' ? 0.34 : 0.30));
-  sheath.addColorStop(0.45, rgba(my, 0.08));
-  sheath.addColorStop(1, rgba(my, theme.glow === 'lighter' ? 0.22 : 0.18));
+  sheath.addColorStop(0, rgba(my, 0.2));
+  sheath.addColorStop(0.45, rgba(my, 0.1));
+  sheath.addColorStop(1, rgba(my, 0.14));
   const paranode = ((3 + 22.249) / meta.model.internode_um) * (meta.model.internode_um / 1000) * ppm;
   for (let k = 0; k < visible.length - 1; k++) {
     const i = visible[k];
@@ -258,19 +248,18 @@ function drawLane(lane, vals, t, isCompare) {
     const xr = xz(zNodes[i + 1]) - gap / 2 - 0.5;
     ctx.beginPath(); ctx.roundRect(xl, fiberY - myelinH / 2, xr - xl, myelinH, myelinH / 2);
     ctx.fillStyle = sheath; ctx.fill();
-    ctx.strokeStyle = rgba(my, 0.38); ctx.lineWidth = 1; ctx.stroke();
+    ctx.strokeStyle = rgba(my, 0.24); ctx.lineWidth = 1; ctx.stroke();
     const act = (lut.act[Math.round(vals[i])] + lut.act[Math.round(vals[i + 1])]) / 2;
     if (act > 0.02) {
       ctx.globalCompositeOperation = theme.glow;
-      ctx.fillStyle = rgba(lut.rgb[Math.round(Math.max(vals[i], vals[i + 1]))], 0.3 * act);
+      ctx.fillStyle = rgba(lut.rgb[Math.round(Math.max(vals[i], vals[i + 1]))], 0.14 * act);
       ctx.fill();
       ctx.globalCompositeOperation = 'source-over';
     }
-    ctx.strokeStyle = rgba(my, 0.22);
+    ctx.strokeStyle = rgba(my, 0.16);
     ctx.beginPath();
     ctx.moveTo(xl + paranode, fiberY - myelinH / 2 + 2); ctx.lineTo(xl + paranode, fiberY + myelinH / 2 - 2);
     ctx.moveTo(xr - paranode, fiberY - myelinH / 2 + 2); ctx.lineTo(xr - paranode, fiberY + myelinH / 2 - 2);
-    ctx.moveTo(xl + myelinH / 2, fiberY - myelinH / 2 + 4); ctx.lineTo(xr - myelinH / 2, fiberY - myelinH / 2 + 4);
     ctx.stroke();
   }
 
@@ -280,9 +269,9 @@ function drawLane(lane, vals, t, isCompare) {
     const x = xz(zNodes[i]);
     const a = lut.act[q];
     if (a > 0.03) {
-      const r = 7 + 30 * a;
+      const r = 5 + 16 * a;
       const g = ctx.createRadialGradient(x, fiberY, 1, x, fiberY, r);
-      g.addColorStop(0, rgba(lut.rgb[q], theme.glow === 'lighter' ? 0.55 * a : 0.4 * a));
+      g.addColorStop(0, rgba(lut.rgb[q], theme.glow === 'lighter' ? 0.35 * a : 0.3 * a));
       g.addColorStop(1, rgba(lut.rgb[q], 0));
       ctx.globalCompositeOperation = theme.glow;
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, fiberY, r, 0, Math.PI * 2); ctx.fill();
@@ -307,20 +296,6 @@ function drawLane(lane, vals, t, isCompare) {
     ctx.strokeStyle = theme.muted; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(X0 + 30, yb); ctx.lineTo(X0 + 30 + ppm, yb); ctx.stroke();
     text('1 mm', X0 + 30 + ppm / 2, yb + 14, { size: 11, align: 'center' });
-    const iN = visible.find((i) => xz(zNodes[i]) > X1 - 190);
-    if (iN !== undefined) {
-      const xn = xz(zNodes[iN]);
-      ctx.beginPath(); ctx.moveTo(xn, fiberY + 7); ctx.lineTo(xn + 14, yb - 4); ctx.stroke();
-      text('node of Ranvier', xn + 17, yb, { size: 11 });
-      const xm = (xz(zNodes[iN - 2]) + xz(zNodes[iN - 1])) / 2;
-      ctx.beginPath(); ctx.moveTo(xm, fiberY + myelinH / 2); ctx.lineTo(xm - 12, yb - 4); ctx.stroke();
-      text('myelin (MYSA · FLUT · STIN)', xm - 15, yb, { size: 11, align: 'right' });
-    }
-    const x1c = xz(zc[0]);
-    ctx.setLineDash([2, 3]);
-    ctx.beginPath(); ctx.moveTo(x1c - 26, fiberY - hPx); ctx.lineTo(x1c - 26, fiberY - myelinH / 2); ctx.stroke();
-    ctx.setLineDash([]);
-    text('0.5 mm', x1c - 32, fiberY - hPx / 2 - 6, { size: 11, align: 'right' });
   }
 
   drawMinimap(lane, vals, t, z0, isCompare);
@@ -344,8 +319,8 @@ function drawMinimap(lane, vals, t, zView0, isCompare) {
     const x = xm(zNodes[i]);
     if (a > 0.05) {
       ctx.globalCompositeOperation = theme.glow;
-      ctx.fillStyle = rgba(lut.rgb[q], theme.glow === 'lighter' ? 0.5 * a : 0.35 * a);
-      ctx.beginPath(); ctx.arc(x, y, 3 + 9 * a, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = rgba(lut.rgb[q], theme.glow === 'lighter' ? 0.35 * a : 0.3 * a);
+      ctx.beginPath(); ctx.arc(x, y, 2 + 5 * a, 0, Math.PI * 2); ctx.fill();
       ctx.globalCompositeOperation = 'source-over';
     }
     ctx.fillStyle = lut.css[q];
@@ -356,17 +331,15 @@ function drawMinimap(lane, vals, t, zView0, isCompare) {
   [['left', X0], ['right', X1]].forEach(([side, x]) => {
     const recent = ends[side].some((s) => t >= s && t - s < 0.8);
     if (recent) {
-      const g = ctx.createRadialGradient(x, y, 1, x, y, 22);
-      g.addColorStop(0, rgba(lut.rgb[240], 0.9)); g.addColorStop(1, rgba(lut.rgb[240], 0));
+      const g = ctx.createRadialGradient(x, y, 1, x, y, 12);
+      g.addColorStop(0, rgba(lut.rgb[240], 0.6)); g.addColorStop(1, rgba(lut.rgb[240], 0));
       ctx.globalCompositeOperation = theme.glow;
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 22, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI * 2); ctx.fill();
       ctx.globalCompositeOperation = 'source-over';
     }
   });
-  text('0 mm', X0, y + 22, { size: 11 });
-  text(`whole fibre, ${Math.round(L)} mm`, (X0 + X1) / 2, y + 22, { size: 11, align: 'center' });
-  text(`${Math.round(L)} mm`, X1, y + 22, { size: 11, align: 'right' });
-  if (!isCompare) text('electrode', xm(meta.electrode.contacts_mm[1]) + 10, y - 12, { size: 11 });
+  text('0', X0, y + 20, { size: 10 });
+  text(`${Math.round(L)} mm`, X1, y + 20, { size: 10, align: 'right' });
 }
 
 function drawKymo(k, key, t) {
@@ -393,7 +366,6 @@ function drawKymo(k, key, t) {
   ctx.translate(22, k.y + k.h / 2); ctx.rotate(-Math.PI / 2);
   text('position (mm)', 0, 0, { size: 11, align: 'center' });
   ctx.restore();
-  text('voltage along the whole fibre over time', X0 + 8, k.y + 16, { size: 11, color: theme.ink });
 }
 
 function drawTrace(tr, t, isCompare) {
@@ -410,9 +382,7 @@ function drawTrace(tr, t, isCompare) {
     ctx.fillStyle = past ? rgba(v > 0 ? theme.anod : theme.cath, 0.95) : theme.faint;
     ctx.fillRect(xa, v > 0 ? y - hS : y, w, hS);
   }
-  const amp = Math.abs(wf.amplitude_mA) * 1000;
-  text(isCompare ? wf.label.toLowerCase() : 'stimulus', X0 - 8, y - 2, { size: 11, align: 'right', color: theme.ink });
-  text(`${amp.toFixed(0)} µA`, X0 - 8, y + 12, { size: 10, align: 'right', mono: true });
+  text(isCompare ? wf.label.toLowerCase() : 'stimulus', X0 - 8, y + 4, { size: 11, align: 'right', color: theme.ink });
   // spikes leaving each end of the fibre
   ['left', 'right'].forEach((side, r) => {
     const yr = y + (isCompare ? 22 : 30) + r * 13;
@@ -448,10 +418,10 @@ function drawAxis(y) {
 function render(t) {
   const lay = layout();
   const dpr = CAPTURE ? 1 : Math.min(2, window.devicePixelRatio || 1);
-  if (canvas.width !== W * dpr || canvas.height !== lay.H * dpr) {
-    canvas.width = W * dpr; canvas.height = lay.H * dpr;
-  }
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const cw = Math.round(W * dpr);
+  const ch = Math.round(lay.H * dpr);
+  if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
+  ctx.setTransform(cw / W, 0, 0, ch / lay.H, 0, 0);
   ctx.fillStyle = theme.bg;
   ctx.fillRect(0, 0, W, lay.H);
   const isCompare = state.mode === 'compare';
@@ -465,7 +435,7 @@ function render(t) {
   }
   for (const tr of lay.traces) drawTrace(tr, t, isCompare);
   drawAxis(lay.axisY);
-  text(`t = ${t.toFixed(2)} ms`, X1, 20, { size: 13, align: 'right', mono: true, color: theme.ink });
+  text(`${t.toFixed(1)} ms`, X1, 18, { size: 11, align: 'right', mono: true });
   const clock = document.getElementById('clock');
   if (clock) clock.textContent = `t = ${t.toFixed(1)} ms`;
 }
