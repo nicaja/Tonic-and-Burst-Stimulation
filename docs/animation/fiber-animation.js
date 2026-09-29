@@ -447,8 +447,7 @@ function updateStats() {
     const wf = meta.waveforms[key];
     const exp = EXPECTED_PULSES[key];
     const r = wf.end_spikes_ms.right.length;
-    const l = wf.end_spikes_ms.left.length;
-    return `<div><b>${wf.label}</b> <span>· threshold ${(Math.abs(wf.threshold_mA) * 1000).toFixed(1)} µA · stimulus ${(Math.abs(wf.amplitude_mA) * 1000).toFixed(1)} µA (1.5×) · ${exp} pulses · spikes reaching the right end ${r} (${Math.round((100 * r) / exp)}%), left end ${l}</span></div>`;
+    return `<div><b>${wf.label}</b> <span>${r}/${exp} pulses reach the fibre end</span></div>`;
   }).join('');
 }
 

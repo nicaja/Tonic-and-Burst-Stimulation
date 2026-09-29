@@ -42,11 +42,9 @@
     .stats { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 14px 2px 0; font-size: 14px; }
     .stats b { color: var(--ink); font-weight: 600; }
     .stats span { color: var(--muted); }
-    .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px 28px;
-      margin-top: 22px; color: var(--muted); font-size: 14px; }
-    .legend b { color: var(--ink); font-weight: 600; }
+    .legend { margin: 14px 2px 0; color: var(--muted); font-size: 14px; }
     .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; }
-    .note { color: var(--muted); font-size: 13px; margin-top: 22px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .note { color: var(--muted); font-size: 13px; margin-top: 18px; }
     .note a { color: var(--accent); }
     body.capture main { padding: 0; max-width: none; }
     body.capture .chrome { display: none; }
@@ -57,7 +55,7 @@
   <main>
     <div class="chrome">
       <h1>Tonic and burst stimulation of a myelinated axon</h1>
-      <p class="lede">Membrane voltage at every node of a 4 µm MRG axon model during spinal cord stimulation at 1.5× activation threshold, re-run from the EMBC 2025 study. Each biphasic pulse can start a spike near the electrode; watch where spikes begin, how they travel along the fibre, and which ones never arrive.</p>
+      <p class="lede">4 µm MRG axon model at 1.5× activation threshold, re-run from the EMBC 2025 study.</p>
       <div class="controls" role="toolbar" aria-label="Animation controls">
         <div class="group" role="group" aria-label="Waveform">
           <button type="button" data-mode="tonic" aria-pressed="false">Tonic 40 Hz</button>
@@ -84,12 +82,8 @@
     </div>
     <div class="chrome">
       <div class="stats" id="stats"></div>
-      <div class="legend">
-        <div><b>Fibre.</b> A 100 mm, 4 µm axon built with the McIntyre–Richardson–Grill geometry: 243 nodes of Ranvier 412 µm apart, each internode made of MYSA, FLUT and six STIN myelin segments. The close-up shows the 13 mm around the electrode; node width and all vertical sizes are exaggerated for visibility.</div>
-        <div><b>Electrode.</b> Two point-source contacts 0.5 mm above the fibre and 3 mm apart. During each phase one contact is <span class="swatch" style="background:var(--cath)"></span>cathodic and the other <span class="swatch" style="background:var(--anod)"></span>anodic. Bars at the nodes show the activating function: where the field pushes the membrane towards (up) or away from (down) firing.</div>
-        <div><b>Voltage.</b> Node colour and glow follow the recorded membrane potential, from <span class="swatch" style="background:var(--hyp)"></span>hyperpolarised through <span class="swatch" style="background:var(--rest);outline:1px solid var(--line)"></span>rest to <span class="swatch" style="background:var(--spike)"></span>an action potential. The map below plots the same voltage for all nodes over time; ticks mark spikes leaving the left and right ends of the fibre.</div>
-      </div>
-      <p class="note">Data: re-simulation of the amplitude-sweep configuration (4 µm fibre, 0.2 ms tonic and FAST pulses, 1 ms burst pulses, active charge balance, 1.5× threshold) with PyFibers and NEURON 8.2.6. Thresholds, action-potential counts and last-spike times match the saved project outputs exactly. Paper: <a href="https://doi.org/10.1109/EMBC58623.2025.11253067">Atchuthan, Grill &amp; Meijs, IEEE EMBC 2025</a>. The model explores mechanisms; it does not predict clinical outcomes.</p>
+      <p class="legend"><span class="swatch" style="background:var(--cath)"></span>cathode <span class="swatch" style="background:var(--anod)"></span>anode · node colour is the membrane voltage, from <span class="swatch" style="background:var(--hyp)"></span>hyperpolarised to <span class="swatch" style="background:var(--spike)"></span>spiking</p>
+      <p class="note">Re-simulated with PyFibers and NEURON 8.2.6. <a href="https://doi.org/10.1109/EMBC58623.2025.11253067">Atchuthan, Grill &amp; Meijs, IEEE EMBC 2025</a></p>
     </div>
   </main>
   <script type="module" src="fiber-animation.js"></script>
